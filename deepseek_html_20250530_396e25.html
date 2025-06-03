@@ -1,0 +1,1660 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GymFit - Mis Logros</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --dark: #1a1a1a;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            
+            --bg-color: #f5f5f5;
+            --text-color: #1a1a1a;
+            --card-bg: white;
+            --card-shadow: rgba(0,0,0,0.1);
+            --stat-card-bg: #f8f9fa;
+            --achievement-card-bg: white;
+            --border-color: #e0e0e0;
+            --progress-bg: #e0e0e0;
+        }
+        
+        .dark-mode {
+            --bg-color: #121212;
+            --text-color: #f8f9fa;
+            --card-bg: #1e1e1e;
+            --card-shadow: rgba(0,0,0,0.3);
+            --stat-card-bg: #2d2d2d;
+            --achievement-card-bg: #252525;
+            --border-color: #333;
+            --progress-bg: #333;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px var(--card-shadow);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        
+        h1, h2, h3 {
+            color: var(--primary);
+            transition: color 0.3s;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .motivation-banner {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .motivation-banner::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.2) 0%, transparent 30%);
+        }
+        
+        .motivation-text {
+            position: relative;
+            z-index: 2;
+            font-size: 1.1em;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .motivation-author {
+            display: block;
+            text-align: right;
+            font-style: italic;
+            font-size: 0.9em;
+            margin-top: 5px;
+            opacity: 0.8;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            background: var(--stat-card-bg);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px var(--card-shadow);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        
+        .stat-card i {
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .stat-card h3 {
+            margin: 5px 0;
+            font-size: 24px;
+            color: var(--text-color);
+        }
+        
+        .stat-card p {
+            margin: 0;
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .achievements {
+            margin-top: 30px;
+        }
+        
+        .achievement-card {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: var(--achievement-card-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 5px var(--card-shadow);
+            border-left: 4px solid var(--primary);
+            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+        }
+        
+        .achievement-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px var(--card-shadow);
+        }
+        
+        .achievement-icon {
+            font-size: 28px;
+            color: gold;
+            margin-right: 15px;
+            width: 40px;
+            text-align: center;
+        }
+        
+        .achievement-details {
+            flex: 1;
+        }
+        
+        .achievement-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--text-color);
+        }
+        
+        .achievement-progress {
+            height: 6px;
+            background: var(--progress-bg);
+            border-radius: 3px;
+            margin: 8px 0;
+            overflow: hidden;
+            transition: background-color 0.3s;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.5s ease, background-color 0.3s;
+        }
+        
+        .achievement-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--gray);
+        }
+        
+        .achievement-reward {
+            font-size: 12px;
+            color: var(--success);
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        .locked {
+            opacity: 0.6;
+            border-left-color: var(--gray);
+        }
+        
+        .locked .achievement-icon {
+            color: var(--gray);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px var(--card-shadow);
+            transform: translateX(200%);
+            transition: transform 0.3s ease, background-color 0.3s, color 0.3s;
+            z-index: 1000;
+            max-width: 300px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .achievement-notification {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+            transition: all 0.3s;
+            font-size: 1em;
+        }
+        
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--card-shadow);
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .energy-bar {
+            height: 6px;
+            background: var(--progress-bg);
+            border-radius: 3px;
+            margin-top: 10px;
+            overflow: hidden;
+            transition: background-color 0.3s;
+        }
+        
+        .energy-fill {
+            height: 100%;
+            background: var(--success);
+            width: 100%;
+            transition: width 0.5s, background-color 0.3s;
+        }
+        
+        .energy-low {
+            background: var(--warning);
+        }
+        
+        .energy-critical {
+            background: var(--danger);
+        }
+        
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        
+        .dark-mode-toggle:hover {
+            transform: scale(1.1);
+            background: var(--secondary);
+        }
+        
+        /* Estilos para el reproductor de música */
+        .music-player {
+            margin-top: 30px;
+            padding: 15px;
+            background: var(--stat-card-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 5px var(--card-shadow);
+        }
+        
+        .music-player h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .music-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .music-option-btn {
+            flex: 1;
+            padding: 10px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .music-option-btn:hover {
+            background: var(--secondary);
+        }
+        
+        .music-option-btn i {
+            margin-right: 5px;
+        }
+        
+        .player-container {
+            display: none;
+            margin-top: 15px;
+        }
+        
+        .player-container.active {
+            display: block;
+        }
+        
+        .spotify-player {
+            width: 100%;
+            height: 80px;
+            border-radius: 5px;
+            border: none;
+        }
+        
+        .local-player {
+            width: 100%;
+        }
+        
+        .local-player-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .local-player-btn {
+            flex: 1;
+            padding: 8px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .local-player-btn:hover {
+            background: var(--secondary);
+        }
+        
+        .playlist {
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .playlist-item {
+            padding: 8px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .playlist-item:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+        
+        .playlist-item.active {
+            background-color: rgba(67, 97, 238, 0.2);
+            font-weight: bold;
+        }
+        
+        /* Estilos para el plan de comidas */
+        .meal-plan {
+            margin-top: 30px;
+            padding: 15px;
+            background: var(--stat-card-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 5px var(--card-shadow);
+        }
+        
+        .meal-plan h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .day-selector {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+        
+        .day-btn {
+            flex: 1;
+            min-width: 100px;
+            padding: 8px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .day-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .day-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .meal-category {
+            margin-bottom: 20px;
+        }
+        
+        .meal-category h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+        
+        .meal-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px var(--card-shadow);
+            border-left: 4px solid var(--success);
+        }
+        
+        .meal-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+        
+        .meal-calories {
+            display: inline-block;
+            background: var(--success);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .meal-ingredients {
+            margin-bottom: 10px;
+        }
+        
+        .meal-ingredients h4 {
+            margin: 5px 0;
+            font-size: 14px;
+            color: var(--text-color);
+        }
+        
+        .meal-ingredients ul {
+            margin: 5px 0;
+            padding-left: 20px;
+            font-size: 14px;
+        }
+        
+        .meal-instructions {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .meal-instructions h4 {
+            margin: 10px 0 5px 0;
+            font-size: 14px;
+            color: var(--text-color);
+        }
+        
+        .nutrition-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .nutrition-item {
+            background: rgba(67, 97, 238, 0.1);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+        
+        .nutrition-item span {
+            font-weight: bold;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-trophy"></i> Mis Logros</h1>
+        
+        <!-- Banner de Motivación -->
+        <div class="motivation-banner">
+            <div class="motivation-text">
+                <span id="motivation-message">¡Tú puedes! Cada pequeño paso te acerca a tu meta.</span>
+                <span class="motivation-author" id="motivation-author">- Anónimo</span>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <i class="fas fa-fire"></i>
+                <h3 id="streak">0</h3>
+                <p>Días consecutivos</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-dumbbell"></i>
+                <h3 id="workouts">0</h3>
+                <p>Entrenamientos</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-check-circle"></i>
+                <h3 id="achievements">0/5</h3>
+                <p>Logros completados</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-star"></i>
+                <h3 id="xp">0</h3>
+                <p>Puntos XP</p>
+                <div class="energy-bar">
+                    <div class="energy-fill" id="energy-bar"></div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="btn" id="complete-workout"><i class="fas fa-dumbbell"></i> Completar Entrenamiento</button>
+        <button class="btn" id="hydrate" style="background: var(--success); margin-top: 10px;">
+            <i class="fas fa-tint"></i> Tomar Agua (+5 energía)
+        </button>
+        
+        <!-- Plan de comidas -->
+        <div class="meal-plan">
+            <h2><i class="fas fa-utensils"></i> Plan de Comidas</h2>
+            
+            <div class="day-selector" id="day-selector">
+                <!-- Días se generarán dinámicamente -->
+            </div>
+            
+            <div class="meal-category">
+                <h3><i class="fas fa-sun"></i> Desayuno</h3>
+                <div class="meal-card" id="breakfast-meal">
+                    <!-- Contenido del desayuno se generará dinámicamente -->
+                </div>
+            </div>
+            
+            <div class="meal-category">
+                <h3><i class="fas fa-sun"></i> Comida</h3>
+                <div class="meal-card" id="lunch-meal">
+                    <!-- Contenido de la comida se generará dinámicamente -->
+                </div>
+            </div>
+            
+            <div class="meal-category">
+                <h3><i class="fas fa-moon"></i> Cena</h3>
+                <div class="meal-card" id="dinner-meal">
+                    <!-- Contenido de la cena se generará dinámicamente -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Reproductor de música -->
+        <div class="music-player">
+            <h2><i class="fas fa-music"></i> Música para entrenar</h2>
+            
+            <div class="music-options">
+                <button class="music-option-btn" id="spotify-btn"><i class="fab fa-spotify"></i> Spotify</button>
+                <button class="music-option-btn" id="local-btn"><i class="fas fa-headphones"></i> Dispositivo</button>
+            </div>
+            
+            <!-- Reproductor de Spotify -->
+            <div class="player-container" id="spotify-player">
+                <iframe class="spotify-player" id="spotify-iframe" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX70RN3TfWWJh?utm_source=generator" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+            </div>
+            
+            <!-- Reproductor local -->
+            <div class="player-container" id="local-player">
+                <audio id="audio-player" class="local-player"></audio>
+                <div class="local-player-controls">
+                    <button class="local-player-btn" id="play-btn"><i class="fas fa-play"></i> Reproducir</button>
+                    <button class="local-player-btn" id="pause-btn"><i class="fas fa-pause"></i> Pausa</button>
+                    <button class="local-player-btn" id="stop-btn"><i class="fas fa-stop"></i> Detener</button>
+                    <input type="file" id="file-input" accept="audio/*" style="display: none;">
+                    <button class="local-player-btn" id="upload-btn"><i class="fas fa-upload"></i> Subir</button>
+                </div>
+                <div class="playlist" id="playlist"></div>
+            </div>
+        </div>
+        
+        <div class="achievements">
+            <h2><i class="fas fa-award"></i> Tus Logros</h2>
+            <div id="achievements-list"></div>
+        </div>
+    </div>
+    
+    <button class="dark-mode-toggle" id="dark-mode-toggle">
+        <i class="fas fa-moon"></i>
+    </button>
+    
+    <div id="notification" class="notification">
+        <div id="notification-message"></div>
+    </div>
+    
+    <script>
+        // Datos del usuario
+        const userData = {
+            streak: 0,
+            workouts: 0,
+            xp: 0,
+            energy: 100,
+            lastWorkoutDate: null,
+            darkMode: false,
+            achievements: [
+                { id: 1, name: "Primer Entrenamiento", icon: "fa-star", progress: 0, target: 1, unlocked: false, xp: 50 },
+                { id: 2, name: "5 Entrenamientos", icon: "fa-fire", progress: 0, target: 5, unlocked: false, xp: 100 },
+                { id: 3, name: "Racha de 3 Días", icon: "fa-calendar", progress: 0, target: 3, unlocked: false, xp: 150 },
+                { id: 4, name: "Entrenamiento Intenso", icon: "fa-bolt", progress: 0, target: 10, unlocked: false, xp: 200 },
+                { id: 5, name: "Maestro del Gimnasio", icon: "fa-trophy", progress: 0, target: 20, unlocked: false, xp: 500 }
+            ],
+            playlist: [],
+            currentDay: 0
+        };
+        
+        // Mensajes motivacionales
+        const motivationMessages = [
+            { text: "¡El éxito es la suma de pequeños esfuerzos repetidos día tras día!", author: "Robert Collier" },
+            { text: "La disciplina es el puente entre metas y logros.", author: "Jim Rohn" },
+            { text: "No cuentes los días, haz que los días cuenten.", author: "Muhammad Ali" },
+            { text: "El cuerpo logra lo que la mente cree.", author: "Anónimo" },
+            { text: "La fuerza no viene de la capacidad física. Viene de una voluntad indomable.", author: "Mahatma Gandhi" },
+            { text: "Hoy es tu oportunidad de ser mejor que ayer.", author: "Anónimo" },
+            { text: "Cada repetición te acerca a tu objetivo.", author: "Anónimo" },
+            { text: "El dolor que sientes hoy será la fuerza que sentirás mañana.", author: "Anónimo" },
+            { text: "No es acerca de tener tiempo, es acerca de hacer tiempo.", author: "Anónimo" },
+            { text: "Tú eres más fuerte de lo que crees.", author: "Anónimo" }
+        ];
+        
+        // Mensajes específicos por progreso
+        const progressMessages = {
+            firstWorkout: [
+                { text: "¡Gran comienzo! El primer paso es siempre el más importante.", author: "Anónimo" }
+            ],
+            streak: [
+                { text: "¡{days} días seguidos! ¡Sigue así, estás construyendo un hábito!", author: "Anónimo" }
+            ],
+            achievement: [
+                { text: "¡Logro desbloqueado! Tu esfuerzo está dando resultados.", author: "Anónimo" }
+            ],
+            energyLow: [
+                { text: "Tu energía está baja. Recuerda descansar y recuperarte.", author: "Anónimo" }
+            ],
+            energyCritical: [
+                { text: "¡Cuidado! Tu energía está muy baja. Descansa y rehidrátate.", author: "Anónimo" }
+            ]
+        };
+        
+        // Recetas para cada día
+        const mealPlans = [
+            { // Día 1
+                breakfast: {
+                    name: "Avena con frutas y nueces",
+                    calories: 350,
+                    ingredients: [
+                        "1/2 taza de avena",
+                        "1 taza de leche (o leche vegetal)",
+                        "1 cucharada de miel",
+                        "1/2 plátano en rodajas",
+                        "1/4 taza de fresas picadas",
+                        "1 cucharada de nueces picadas",
+                        "1 pizca de canela"
+                    ],
+                    instructions: "1. Cocina la avena con la leche a fuego medio hasta que espese. 2. Agrega la miel y la canela. 3. Sirve en un tazón y decora con las frutas y nueces.",
+                    nutrition: {
+                        protein: "12g",
+                        carbs: "55g",
+                        fat: "8g",
+                        fiber: "7g"
+                    }
+                },
+                lunch: {
+                    name: "Pollo al horno con quinoa y vegetales",
+                    calories: 450,
+                    ingredients: [
+                        "1 pechuga de pollo (150g)",
+                        "1/2 taza de quinoa cocida",
+                        "1 taza de brócoli al vapor",
+                        "1/2 taza de zanahorias al vapor",
+                        "1 cucharadita de aceite de oliva",
+                        "Jugo de 1/2 limón",
+                        "Especias al gusto (pimienta, ajo en polvo, orégano)"
+                    ],
+                    instructions: "1. Precalienta el horno a 180°C. 2. Sazona el pollo con las especias y un poco de aceite. 3. Hornea por 25-30 minutos hasta que esté cocido. 4. Cocina la quinoa según las instrucciones del paquete. 5. Cocina al vapor los vegetales. 6. Sirve todo junto rociado con jugo de limón.",
+                    nutrition: {
+                        protein: "35g",
+                        carbs: "40g",
+                        fat: "10g",
+                        fiber: "8g"
+                    }
+                },
+                dinner: {
+                    name: "Ensalada de atún y aguacate",
+                    calories: 380,
+                    ingredients: [
+                        "1 lata de atún al agua (escurrido)",
+                        "1/2 aguacate maduro",
+                        "1 taza de lechuga mezclada",
+                        "1/2 pepino en rodajas",
+                        "1/2 taza de tomates cherry",
+                        "1 cucharada de aceite de oliva",
+                        "Jugo de 1/2 limón",
+                        "Sal y pimienta al gusto"
+                    ],
+                    instructions: "1. En un tazón grande, mezcla la lechuga, pepino y tomates. 2. Agrega el atún desmenuzado y el aguacate en cubos. 3. Aliña con aceite de oliva, jugo de limón, sal y pimienta. 4. Mezcla suavemente y sirve.",
+                    nutrition: {
+                        protein: "25g",
+                        carbs: "15g",
+                        fat: "25g",
+                        fiber: "7g"
+                    }
+                }
+            },
+            { // Día 2
+                breakfast: {
+                    name: "Tostadas de aguacate con huevo",
+                    calories: 400,
+                    ingredients: [
+                        "2 rebanadas de pan integral",
+                        "1/2 aguacate maduro",
+                        "2 huevos",
+                        "1 pizca de sal y pimienta",
+                        "1 pizca de chile en polvo (opcional)",
+                        "1 cucharadita de aceite de oliva"
+                    ],
+                    instructions: "1. Tuesta el pan. 2. Mientras tanto, calienta el aceite en una sartén y cocina los huevos al gusto. 3. Machaca el aguacate y úntalo sobre el pan tostado. 4. Coloca los huevos encima y sazona con sal, pimienta y chile en polvo si deseas.",
+                    nutrition: {
+                        protein: "18g",
+                        carbs: "30g",
+                        fat: "22g",
+                        fiber: "8g"
+                    }
+                },
+                lunch: {
+                    name: "Salmón con puré de camote y espárragos",
+                    calories: 500,
+                    ingredients: [
+                        "1 filete de salmón (150g)",
+                        "1 camote mediano",
+                        "8-10 espárragos",
+                        "1 cucharadita de mantequilla",
+                        "1 cucharadita de aceite de oliva",
+                        "Jugo de 1/2 limón",
+                        "Eneldo fresco o seco",
+                        "Sal y pimienta al gusto"
+                    ],
+                    instructions: "1. Hierve el camote hasta que esté suave, luego haz puré con la mantequilla y sazona. 2. Sazona el salmón con sal, pimienta y eneldo. 3. Cocina el salmón en una sartén con aceite a fuego medio por 4-5 minutos por lado. 4. Cocina los espárragos al vapor o salteados. 5. Sirve todo junto rociado con jugo de limón.",
+                    nutrition: {
+                        protein: "30g",
+                        carbs: "45g",
+                        fat: "20g",
+                        fiber: "8g"
+                    }
+                },
+                dinner: {
+                    name: "Tazón de burrito vegetariano",
+                    calories: 350,
+                    ingredients: [
+                        "1/2 taza de arroz integral cocido",
+                        "1/2 taza de frijoles negros cocidos",
+                        "1/4 taza de maíz",
+                        "1/4 taza de pico de gallo (tomate, cebolla, cilantro)",
+                        "1/4 aguacate en cubos",
+                        "1 cucharada de yogur griego natural (como sustituto de crema)",
+                        "1 pizca de comino y chile en polvo",
+                        "Jugo de 1/2 lima"
+                    ],
+                    instructions: "1. Calienta los frijoles con el comino y chile en polvo. 2. En un tazón, coloca el arroz como base. 3. Agrega capas de frijoles, maíz, pico de gallo y aguacate. 4. Rocía con jugo de lima y añade una cucharada de yogur griego encima.",
+                    nutrition: {
+                        protein: "15g",
+                        carbs: "60g",
+                        fat: "10g",
+                        fiber: "12g"
+                    }
+                }
+            },
+            { // Día 3
+                breakfast: {
+                    name: "Smoothie bowl proteico",
+                    calories: 380,
+                    ingredients: [
+                        "1 plátano congelado",
+                        "1/2 taza de yogur griego natural",
+                        "1/2 taza de leche (o leche vegetal)",
+                        "1 cucharada de mantequilla de maní",
+                        "1 cucharada de proteína en polvo (opcional)",
+                        "1/4 taza de granola",
+                        "1 cucharada de semillas de chía",
+                        "1/2 taza de frutas mixtas (moras, fresas, arándanos)"
+                    ],
+                    instructions: "1. En una licuadora, mezcla el plátano, yogur, leche, mantequilla de maní y proteína en polvo hasta obtener una mezcla suave. 2. Vierte en un tazón y decora con granola, semillas de chía y frutas frescas.",
+                    nutrition: {
+                        protein: "25g",
+                        carbs: "50g",
+                        fat: "12g",
+                        fiber: "8g"
+                    }
+                },
+                lunch: {
+                    name: "Wrap de pavo y vegetales",
+                    calories: 420,
+                    ingredients: [
+                        "1 tortilla integral grande",
+                        "100g de pechuga de pavo en rebanadas",
+                        "1/4 aguacate en rodajas",
+                        "1/4 taza de zanahoria rallada",
+                        "1/4 taza de pepino en rodajas",
+                        "1 hoja de lechuga",
+                        "1 cucharada de hummus",
+                        "1 cucharadita de mostaza"
+                    ],
+                    instructions: "1. Unta el hummus y la mostaza sobre la tortilla. 2. Coloca la lechuga, pavo, aguacate y vegetales. 3. Enrolla firmemente y corta por la mitad. 4. Puedes calentar ligeramente si lo prefieres.",
+                    nutrition: {
+                        protein: "30g",
+                        carbs: "40g",
+                        fat: "15g",
+                        fiber: "10g"
+                    }
+                },
+                dinner: {
+                    name: "Omelette de espinaca y champiñones",
+                    calories: 320,
+                    ingredients: [
+                        "2 huevos",
+                        "1 clara de huevo",
+                        "1/2 taza de espinacas frescas",
+                        "1/4 taza de champiñones en rodajas",
+                        "1 cucharada de queso feta desmenuzado",
+                        "1 cucharadita de aceite de oliva",
+                        "Sal y pimienta al gusto"
+                    ],
+                    instructions: "1. Calienta el aceite en una sartén antiadherente. 2. Saltea los champiñones por 2 minutos, añade las espinacas y cocina hasta que se marchiten. 3. Bate los huevos con sal y pimienta y vierte sobre los vegetales. 4. Cocina a fuego medio-bajo hasta que los huevos estén casi cuajados, espolvorea el queso feta y dobla el omelette por la mitad. 5. Sirve caliente.",
+                    nutrition: {
+                        protein: "20g",
+                        carbs: "5g",
+                        fat: "22g",
+                        fiber: "2g"
+                    }
+                }
+            },
+            { // Día 4
+                breakfast: {
+                    name: "Yogur griego con granola y frutos rojos",
+                    calories: 350,
+                    ingredients: [
+                        "1 taza de yogur griego natural",
+                        "1/4 taza de granola casera",
+                        "1/2 taza de frutos rojos (fresas, arándanos, frambuesas)",
+                        "1 cucharada de miel",
+                        "1 cucharada de nueces picadas"
+                    ],
+                    instructions: "1. En un tazón o frasco, coloca una capa de yogur griego. 2. Agrega una capa de granola y luego los frutos rojos. 3. Repite las capas si lo deseas. 4. Termina con un chorrito de miel y las nueces picadas.",
+                    nutrition: {
+                        protein: "20g",
+                        carbs: "40g",
+                        fat: "10g",
+                        fiber: "5g"
+                    }
+                },
+                lunch: {
+                    name: "Bowl de carne molida magra con arroz de coliflor",
+                    calories: 450,
+                    ingredients: [
+                        "150g de carne molida magra (93% magra)",
+                        "1 taza de arroz de coliflor",
+                        "1/2 taza de salsa de tomate natural",
+                        "1/2 taza de calabacín en cubos",
+                        "1/4 taza de cebolla picada",
+                        "1 diente de ajo picado",
+                        "1 cucharadita de aceite de oliva",
+                        "Especias al gusto (comino, pimentón, orégano)"
+                    ],
+                    instructions: "1. En una sartén, calienta el aceite y sofríe la cebolla y el ajo. 2. Agrega la carne molida y cocina hasta que se dore. 3. Añade las especias, salsa de tomate y calabacín. Cocina por 5-7 minutos. 4. Mientras tanto, calienta el arroz de coliflor según las instrucciones. 5. Sirve la mezcla de carne sobre el arroz de coliflor.",
+                    nutrition: {
+                        protein: "35g",
+                        carbs: "20g",
+                        fat: "25g",
+                        fiber: "6g"
+                    }
+                },
+                dinner: {
+                    name: "Sopa de lentejas con espinacas",
+                    calories: 300,
+                    ingredients: [
+                        "1/2 taza de lentejas cocidas",
+                        "1 taza de caldo de vegetales",
+                        "1 taza de espinacas frescas",
+                        "1/4 taza de zanahoria en cubos",
+                        "1/4 taza de apio picado",
+                        "1 diente de ajo picado",
+                        "1 cucharadita de aceite de oliva",
+                        "1/2 cucharadita de comino",
+                        "Jugo de 1/2 limón"
+                    ],
+                    instructions: "1. En una olla, calienta el aceite y sofríe el ajo, zanahoria y apio por 3 minutos. 2. Agrega las lentejas, caldo y comino. Hierve a fuego lento por 10 minutos. 3. Añade las espinacas y cocina por 2 minutos más. 4. Sirve caliente con un chorrito de jugo de limón.",
+                    nutrition: {
+                        protein: "18g",
+                        carbs: "40g",
+                        fat: "5g",
+                        fiber: "15g"
+                    }
+                }
+            },
+            { // Día 5
+                breakfast: {
+                    name: "Panqueques de proteína",
+                    calories: 380,
+                    ingredients: [
+                        "1/2 taza de avena molida",
+                        "1 plátano maduro",
+                        "1 huevo",
+                        "1 cucharada de proteína en polvo (vainilla o natural)",
+                        "1/4 cucharadita de canela",
+                        "1 cucharadita de aceite de coco",
+                        "1 cucharada de mantequilla de almendras",
+                        "1/4 taza de arándanos"
+                    ],
+                    instructions: "1. En un tazón, machaca el plátano y mezcla con el huevo, avena, proteína en polvo y canela. 2. Calienta el aceite en una sartén antiadherente. 3. Vierte pequeñas porciones de la mezcla y cocina por 2-3 minutos por lado. 4. Sirve con mantequilla de almendras y arándanos encima.",
+                    nutrition: {
+                        protein: "25g",
+                        carbs: "45g",
+                        fat: "12g",
+                        fiber: "7g"
+                    }
+                },
+                lunch: {
+                    name: "Ensalada César con pollo a la parrilla",
+                    calories: 480,
+                    ingredients: [
+                        "150g de pechuga de pollo",
+                        "2 tazas de lechuga romana",
+                        "1/4 taza de crutones integrales",
+                        "1 cucharada de queso parmesano rallado",
+                        "1 cucharada de aderezo César light",
+                        "1 cucharadita de aceite de oliva",
+                        "Jugo de 1/2 limón",
+                        "Pimienta negra al gusto"
+                    ],
+                    instructions: "1. Sazona el pollo con jugo de limón, pimienta y un poco de aceite. 2. Cocina a la parrilla o en sartén hasta que esté bien cocido. 3. Corta en tiras. 4. En un tazón grande, mezcla la lechuga, crutones y pollo. 5. Rocía con el aderezo y espolvorea el queso parmesano.",
+                    nutrition: {
+                        protein: "40g",
+                        carbs: "25g",
+                        fat: "20g",
+                        fiber: "4g"
+                    }
+                },
+                dinner: {
+                    name: "Tortilla de claras con vegetales",
+                    calories: 280,
+                    ingredients: [
+                        "4 claras de huevo",
+                        "1 huevo entero",
+                        "1/4 taza de pimiento rojo picado",
+                        "1/4 taza de espinacas picadas",
+                        "1 cucharada de queso cottage",
+                        "1 cucharadita de aceite de oliva",
+                        "Sal y pimienta al gusto"
+                    ],
+                    instructions: "1. En un tazón, bate las claras, el huevo, sal y pimienta. 2. Calienta el aceite en una sartén pequeña y saltea los vegetales por 2 minutos. 3. Vierte la mezcla de huevo sobre los vegetales y cocina a fuego medio-bajo. 4. Cuando esté casi cuajada, añade el queso cottage y dobla la tortilla por la mitad. 5. Cocina por 1 minuto más y sirve.",
+                    nutrition: {
+                        protein: "25g",
+                        carbs: "8g",
+                        fat: "12g",
+                        fiber: "2g"
+                    }
+                }
+            },
+            { // Día 6
+                breakfast: {
+                    name: "Tostada francesa proteica",
+                    calories: 400,
+                    ingredients: [
+                        "2 rebanadas de pan integral",
+                        "1 huevo",
+                        "1 clara de huevo",
+                        "1/4 taza de leche",
+                        "1/2 cucharadita de canela",
+                        "1 cucharadita de miel",
+                        "1/2 cucharadita de extracto de vainilla",
+                        "1 cucharadita de aceite de coco",
+                        "1/4 taza de frutas frescas"
+                    ],
+                    instructions: "1. En un tazón, bate el huevo, clara, leche, canela y vainilla. 2. Sumerge las rebanadas de pan en la mezcla. 3. Calienta el aceite en una sartén y cocina las tostadas por 3-4 minutos por lado. 4. Sirve con miel y frutas frescas encima.",
+                    nutrition: {
+                        protein: "20g",
+                        carbs: "45g",
+                        fat: "12g",
+                        fiber: "6g"
+                    }
+                },
+                lunch: {
+                    name: "Pasta integral con atún y vegetales",
+                    calories: 450,
+                    ingredients: [
+                        "1/2 taza de pasta integral cocida",
+                        "1 lata de atún al agua (escurrido)",
+                        "1/2 taza de tomates cherry cortados",
+                        "1/4 taza de aceitunas negras",
+                        "1 cucharada de alcaparras",
+                        "1 cucharada de aceite de oliva",
+                        "Jugo de 1/2 limón",
+                        "1 diente de ajo picado",
+                        "Perejil fresco picado"
+                    ],
+                    instructions: "1. Cocina la pasta según las instrucciones. 2. En un tazón, mezcla el atún, tomates, aceitunas y alcaparras. 3. Añade la pasta cocida y escurrida. 4. Aliña con aceite de oliva, jugo de limón, ajo y perejil. 5. Mezcla bien y sirve.",
+                    nutrition: {
+                        protein: "30g",
+                        carbs: "50g",
+                        fat: "15g",
+                        fiber: "8g"
+                    }
+                },
+                dinner: {
+                    name: "Crema de brócoli con almendras",
+                    calories: 320,
+                    ingredients: [
+                        "1 taza de brócoli cocido",
+                        "1/2 taza de caldo de vegetales",
+                        "1/4 taza de leche descremada",
+                        "1 cucharada de almendras fileteadas",
+                        "1 cucharadita de aceite de oliva",
+                        "1 diente de ajo",
+                        "1/4 cucharadita de nuez moscada",
+                        "Sal y pimienta al gusto"
+                    ],
+                    instructions: "1. En una olla, sofríe el ajo en aceite por 1 minuto. 2. Añade el brócoli y caldo, cocina por 5 minutos. 3. Licúa hasta obtener una crema suave. 4. Regresa a la olla, añade la leche y nuez moscada. Calienta sin hervir. 5. Sirve con almendras fileteadas encima.",
+                    nutrition: {
+                        protein: "12g",
+                        carbs: "20g",
+                        fat: "18g",
+                        fiber: "6g"
+                    }
+                }
+            },
+            { // Día 7
+                breakfast: {
+                    name: "Chía pudding con mango y coco",
+                    calories: 350,
+                    ingredients: [
+                        "2 cucharadas de semillas de chía",
+                        "1/2 taza de leche de coco sin azúcar",
+                        "1/4 cucharadita de extracto de vainilla",
+                        "1/2 taza de mango en cubos",
+                        "1 cucharada de coco rallado sin azúcar",
+                        "1 cucharadita de miel (opcional)"
+                    ],
+                    instructions: "1. La noche anterior, mezcla las semillas de chía con la leche de coco y vainilla en un frasco. 2. Refrigera toda la noche. 3. Por la mañana, remueve y añade más leche si está muy espeso. 4. Decora con mango, coco rallado y un chorrito de miel si lo deseas.",
+                    nutrition: {
+                        protein: "8g",
+                        carbs: "35g",
+                        fat: "20g",
+                        fiber: "10g"
+                    }
+                },
+                lunch: {
+                    name: "Hamburguesa de garbanzos con ensalada",
+                    calories: 420,
+                    ingredients: [
+                        "1 hamburguesa de garbanzos (puede ser casera o comprada)",
+                        "1 pan integral para hamburguesa",
+                        "1 hoja de lechuga",
+                        "1 rodaja de tomate",
+                        "1 cucharada de hummus",
+                        "1 taza de mezcla de hojas verdes",
+                        "1/2 taza de pepino en rodajas",
+                        "1 cucharada de vinagreta light"
+                    ],
+                    instructions: "1. Cocina la hamburguesa según las instrucciones. 2. Tuesta ligeramente el pan. 3. Unta hummus en el pan, coloca la hamburguesa, lechuga y tomate. 4. Acompaña con la ensalada de hojas verdes y pepino con vinagreta.",
+                    nutrition: {
+                        protein: "18g",
+                        carbs: "55g",
+                        fat: "15g",
+                        fiber: "12g"
+                    }
+                },
+                dinner: {
+                    name: "Merluza al horno con espárragos",
+                    calories: 350,
+                    ingredients: [
+                        "1 filete de merluza (150g)",
+                        "8-10 espárragos",
+                        "1 cucharadita de aceite de oliva",
+                        "1 rodaja de limón",
+                        "1 ramita de eneldo fresco",
+                        "Sal y pimienta al gusto"
+                    ],
+                    instructions: "1. Precalienta el horno a 180°C. 2. Coloca la merluza y los espárragos en una bandeja para horno. 3. Rocía con aceite, sal, pimienta y eneldo. 4. Coloca la rodaja de limón sobre el pescado. 5. Hornea por 15-20 minutos hasta que el pescado esté cocido.",
+                    nutrition: {
+                        protein: "30g",
+                        carbs: "10g",
+                        fat: "15g",
+                        fiber: "4g"
+                    }
+                }
+            }
+        ];
+        
+        // Elementos del reproductor de música
+        const audioPlayer = document.getElementById('audio-player');
+        const playBtn = document.getElementById('play-btn');
+        const pauseBtn = document.getElementById('pause-btn');
+        const stopBtn = document.getElementById('stop-btn');
+        const uploadBtn = document.getElementById('upload-btn');
+        const fileInput = document.getElementById('file-input');
+        const playlistElement = document.getElementById('playlist');
+        let currentTrackIndex = 0;
+        
+        // Cargar datos guardados
+        function loadData() {
+            const savedData = localStorage.getItem('gymfitData');
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                Object.assign(userData, parsedData);
+                
+                // Aplicar modo oscuro si estaba activo
+                if (userData.darkMode) {
+                    document.body.classList.add('dark-mode');
+                    document.getElementById('dark-mode-toggle').innerHTML = '<i class="fas fa-sun"></i>';
+                }
+                
+                // Cargar lista de reproducción si existe
+                if (parsedData.playlist) {
+                    userData.playlist = parsedData.playlist;
+                    renderPlaylist();
+                }
+            }
+            
+            // Establecer el día actual si no está definido
+            if (userData.currentDay === undefined) {
+                userData.currentDay = new Date().getDay(); // 0 (domingo) a 6 (sábado)
+            }
+            
+            updateUI();
+            updateMotivationMessage();
+            renderMealPlan();
+        }
+        
+        // Guardar datos
+        function saveData() {
+            localStorage.setItem('gymfitData', JSON.stringify(userData));
+        }
+        
+        // Actualizar la interfaz
+        function updateUI() {
+            document.getElementById('streak').textContent = userData.streak;
+            document.getElementById('workouts').textContent = userData.workouts;
+            document.getElementById('xp').textContent = userData.xp;
+            
+            const completed = userData.achievements.filter(a => a.unlocked).length;
+            document.getElementById('achievements').textContent = `${completed}/${userData.achievements.length}`;
+            
+            // Actualizar barra de energía
+            const energyBar = document.getElementById('energy-bar');
+            energyBar.style.width = `${userData.energy}%`;
+            energyBar.className = 'energy-fill';
+            
+            if (userData.energy < 30) {
+                energyBar.classList.add('energy-critical');
+            } else if (userData.energy < 60) {
+                energyBar.classList.add('energy-low');
+            }
+            
+            renderAchievements();
+        }
+        
+        // Mostrar logros
+        function renderAchievements() {
+            const container = document.getElementById('achievements-list');
+            container.innerHTML = '';
+            
+            userData.achievements.forEach(achievement => {
+                const progressPercent = (achievement.progress / achievement.target) * 100;
+                
+                const achievementEl = document.createElement('div');
+                achievementEl.className = `achievement-card ${achievement.unlocked ? '' : 'locked'}`;
+                achievementEl.innerHTML = `
+                    <div class="achievement-icon">
+                        <i class="fas ${achievement.icon}"></i>
+                    </div>
+                    <div class="achievement-details">
+                        <div class="achievement-title">${achievement.name}</div>
+                        <div class="achievement-progress">
+                            <div class="progress-bar" style="width: ${progressPercent}%"></div>
+                        </div>
+                        <div class="achievement-meta">
+                            <span>${achievement.progress}/${achievement.target}</span>
+                            <span>${achievement.unlocked ? 'Completado' : 'En progreso'}</span>
+                        </div>
+                        ${achievement.unlocked ? 
+                            `<div class="achievement-reward">+${achievement.xp} XP</div>` : ''}
+                    </div>
+                `;
+                
+                container.appendChild(achievementEl);
+            });
+        }
+        
+        // Mostrar notificación
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.className = `notification ${type}`;
+            document.getElementById('notification-message').textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Efecto de confeti
+        function createConfetti() {
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.top = '-10px';
+                document.body.appendChild(confetti);
+                
+                const animationDuration = Math.random() * 3 + 2;
+                
+                confetti.animate([
+                    { transform: `translate(0, 0) rotate(0deg)`, opacity: 1 },
+                    { transform: `translate(${Math.random() * 200 - 100}px, ${window.innerHeight}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                ], {
+                    duration: animationDuration * 1000,
+                    easing: 'cubic-bezier(0.1, 0.8, 0.9, 1)'
+                });
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, animationDuration * 1000);
+            }
+        }
+        
+        // Actualizar mensaje motivacional
+        function updateMotivationMessage(type) {
+            let message;
+            
+            if (type === 'firstWorkout') {
+                message = getRandomMessage(progressMessages.firstWorkout);
+            } else if (type === 'streak') {
+                const streakMessages = progressMessages.streak.map(m => ({
+                    text: m.text.replace('{days}', userData.streak),
+                    author: m.author
+                }));
+                message = getRandomMessage(streakMessages);
+            } else if (type === 'achievement') {
+                message = getRandomMessage(progressMessages.achievement);
+            } else if (type === 'energyLow' && userData.energy < 60) {
+                message = userData.energy < 30 ? 
+                    getRandomMessage(progressMessages.energyCritical) : 
+                    getRandomMessage(progressMessages.energyLow);
+            } else {
+                message = getRandomMessage(motivationMessages);
+            }
+            
+            document.getElementById('motivation-message').textContent = message.text;
+            document.getElementById('motivation-author').textContent = `- ${message.author}`;
+        }
+        
+        // Obtener mensaje aleatorio
+        function getRandomMessage(messages) {
+            return messages[Math.floor(Math.random() * messages.length)];
+        }
+        
+        // Completar un entrenamiento
+        function completeWorkout() {
+            const today = new Date().toDateString();
+            
+            // Verificar si ya se registró un entrenamiento hoy
+            if (userData.lastWorkoutDate === today) {
+                showNotification("¡Ya registraste un entrenamiento hoy!", 'warning');
+                return;
+            }
+            
+            const isFirstWorkout = userData.workouts === 0;
+            userData.workouts++;
+            userData.lastWorkoutDate = today;
+            
+            // Actualizar racha
+            if (!userData.lastWorkoutDate || isConsecutiveDay(userData.lastWorkoutDate)) {
+                userData.streak++;
+            } else {
+                userData.streak = 1;
+            }
+            
+            // Reducir energía
+            userData.energy = Math.max(0, userData.energy - 20);
+            
+            // Actualizar logros
+            let newAchievements = [];
+            
+            userData.achievements.forEach(achievement => {
+                if (!achievement.unlocked) {
+                    achievement.progress = 
+                        achievement.id === 1 || achievement.id === 2 || achievement.id === 4 || achievement.id === 5 ? 
+                        userData.workouts : 
+                        (achievement.id === 3 ? userData.streak : achievement.progress);
+                    
+                    if (achievement.progress >= achievement.target) {
+                        achievement.unlocked = true;
+                        userData.xp += achievement.xp;
+                        newAchievements.push(achievement.name);
+                    }
+                }
+            });
+            
+            // Mostrar notificaciones
+            if (newAchievements.length > 0) {
+                showNotification(`¡Logro desbloqueado: ${newAchievements.join(', ')}! +${newAchievements.reduce((sum, a) => sum + userData.achievements.find(x => x.name === a).xp, 0)} XP`, 'success');
+                createConfetti();
+                updateMotivationMessage('achievement');
+            } else {
+                showNotification("¡Entrenamiento registrado! +10 XP", 'success');
+                userData.xp += 10;
+                
+                if (isFirstWorkout) {
+                    updateMotivationMessage('firstWorkout');
+                } else if (userData.streak % 3 === 0) {
+                    updateMotivationMessage('streak');
+                }
+            }
+            
+            // Verificar energía baja
+            if (userData.energy < 60) {
+                updateMotivationMessage('energyLow');
+            }
+            
+            saveData();
+            updateUI();
+        }
+        
+        // Tomar agua
+        function hydrate() {
+            if (userData.energy >= 100) {
+                showNotification("¡Ya tienes toda la energía que necesitas!", 'info');
+                return;
+            }
+            
+            userData.energy = Math.min(100, userData.energy + 5);
+            showNotification("¡Agua registrada! +5 energía", 'success');
+            saveData();
+            updateUI();
+        }
+        
+        // Verificar si es un día consecutivo
+        function isConsecutiveDay(lastDateStr) {
+            const lastDate = new Date(lastDateStr);
+            const today = new Date();
+            const diffTime = today - lastDate;
+            const diffDays = diffTime / (1000 * 60 * 60 * 24);
+            return diffDays <= 1;
+        }
+        
+        // Alternar modo oscuro
+        function toggleDarkMode() {
+            userData.darkMode = !userData.darkMode;
+            
+            if (userData.darkMode) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('dark-mode-toggle').innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                document.body.classList.remove('dark-mode');
+                document.getElementById('dark-mode-toggle').innerHTML = '<i class="fas fa-moon"></i>';
+            }
+            
+            saveData();
+        }
+        
+        // Funciones para el reproductor de música
+        function togglePlayer(playerId) {
+            const spotifyPlayer = document.getElementById('spotify-player');
+            const localPlayer = document.getElementById('local-player');
+            
+            if (playerId === 'spotify') {
+                spotifyPlayer.classList.add('active');
+                localPlayer.classList.remove('active');
+            } else {
+                spotifyPlayer.classList.remove('active');
+                localPlayer.classList.add('active');
+            }
+        }
+        
+        function playTrack(index) {
+            if (userData.playlist.length === 0) return;
+            
+            currentTrackIndex = index;
+            const track = userData.playlist[currentTrackIndex];
+            audioPlayer.src = track.url;
+            audioPlayer.play()
+                .then(() => {
+                    updatePlaylistUI();
+                    showNotification(`Reproduciendo: ${track.name}`);
+                })
+                .catch(error => {
+                    console.error("Error al reproducir:", error);
+                    showNotification("Error al reproducir el archivo", 'danger');
+                });
+        }
+        
+        function pauseTrack() {
+            audioPlayer.pause();
+        }
+        
+        function stopTrack() {
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0;
+        }
+        
+        function uploadTrack() {
+            fileInput.click();
+        }
+        
+        function handleFileUpload(event) {
+            const files = event.target.files;
+            if (files.length === 0) return;
+            
+            Array.from(files).forEach(file => {
+                if (!file.type.startsWith('audio/')) {
+                    showNotification(`El archivo ${file.name} no es un archivo de audio válido`, 'warning');
+                    return;
+                }
+                
+                const fileURL = URL.createObjectURL(file);
+                userData.playlist.push({
+                    name: file.name,
+                    url: fileURL
+                });
+            });
+            
+            renderPlaylist();
+            saveData();
+            showNotification(`Se agregaron ${files.length} archivo(s) a la lista de reproducción`);
+        }
+        
+        function renderPlaylist() {
+            playlistElement.innerHTML = '';
+            
+            userData.playlist.forEach((track, index) => {
+                const trackElement = document.createElement('div');
+                trackElement.className = 'playlist-item';
+                if (index === currentTrackIndex && !audioPlayer.paused) {
+                    trackElement.classList.add('active');
+                }
+                trackElement.textContent = track.name;
+                trackElement.addEventListener('click', () => playTrack(index));
+                playlistElement.appendChild(trackElement);
+            });
+        }
+        
+        function updatePlaylistUI() {
+            const items = playlistElement.querySelectorAll('.playlist-item');
+            items.forEach((item, index) => {
+                if (index === currentTrackIndex && !audioPlayer.paused) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+        
+        // Funciones para el plan de comidas
+        function renderMealPlan() {
+            const daySelector = document.getElementById('day-selector');
+            daySelector.innerHTML = '';
+            
+            const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+            
+            days.forEach((day, index) => {
+                const dayBtn = document.createElement('button');
+                dayBtn.className = `day-btn ${index === userData.currentDay ? 'active' : ''}`;
+                dayBtn.textContent = day;
+                dayBtn.addEventListener('click', () => {
+                    userData.currentDay = index;
+                    saveData();
+                    updateMealDisplay();
+                    document.querySelectorAll('.day-btn').forEach(btn => btn.classList.remove('active'));
+                    dayBtn.classList.add('active');
+                });
+                daySelector.appendChild(dayBtn);
+            });
+            
+            updateMealDisplay();
+        }
+        
+        function updateMealDisplay() {
+            const dayPlan = mealPlans[userData.currentDay];
+            
+            // Actualizar desayuno
+            const breakfastCard = document.getElementById('breakfast-meal');
+            breakfastCard.innerHTML = createMealCardHTML(dayPlan.breakfast);
+            
+            // Actualizar comida
+            const lunchCard = document.getElementById('lunch-meal');
+            lunchCard.innerHTML = createMealCardHTML(dayPlan.lunch);
+            
+            // Actualizar cena
+            const dinnerCard = document.getElementById('dinner-meal');
+            dinnerCard.innerHTML = createMealCardHTML(dayPlan.dinner);
+        }
+        
+        function createMealCardHTML(meal) {
+            return `
+                <div class="meal-title">${meal.name}</div>
+                <div class="meal-calories">${meal.calories} kcal</div>
+                
+                <div class="meal-ingredients">
+                    <h4><i class="fas fa-list-ul"></i> Ingredientes:</h4>
+                    <ul>
+                        ${meal.ingredients.map(ing => `<li>${ing}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div class="meal-instructions">
+                    <h4><i class="fas fa-book"></i> Instrucciones:</h4>
+                    <p>${meal.instructions}</p>
+                </div>
+                
+                <div class="nutrition-info">
+                    <div class="nutrition-item"><span>Proteína:</span> ${meal.nutrition.protein}</div>
+                    <div class="nutrition-item"><span>Carbohidratos:</span> ${meal.nutrition.carbs}</div>
+                    <div class="nutrition-item"><span>Grasas:</span> ${meal.nutrition.fat}</div>
+                    <div class="nutrition-item"><span>Fibra:</span> ${meal.nutrition.fiber}</div>
+                </div>
+            `;
+        }
+        
+        // Event listeners
+        document.getElementById('complete-workout').addEventListener('click', completeWorkout);
+        document.getElementById('hydrate').addEventListener('click', hydrate);
+        document.getElementById('dark-mode-toggle').addEventListener('click', toggleDarkMode);
+        
+        // Event listeners para el reproductor de música
+        document.getElementById('spotify-btn').addEventListener('click', () => togglePlayer('spotify'));
+        document.getElementById('local-btn').addEventListener('click', () => togglePlayer('local'));
+        playBtn.addEventListener('click', () => playTrack(currentTrackIndex));
+        pauseBtn.addEventListener('click', pauseTrack);
+        stopBtn.addEventListener('click', stopTrack);
+        uploadBtn.addEventListener('click', uploadTrack);
+        fileInput.addEventListener('change', handleFileUpload);
+        
+        audioPlayer.addEventListener('ended', () => {
+            currentTrackIndex = (currentTrackIndex + 1) % userData.playlist.length;
+            if (userData.playlist.length > 0) {
+                playTrack(currentTrackIndex);
+            }
+        });
+        
+        audioPlayer.addEventListener('play', updatePlaylistUI);
+        audioPlayer.addEventListener('pause', updatePlaylistUI);
+        
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            
+            // Mostrar reproductor de Spotify por defecto
+            togglePlayer('spotify');
+            
+            // Rotar mensajes motivacionales cada 30 segundos
+            setInterval(() => {
+                if (userData.energy < 60) {
+                    updateMotivationMessage('energyLow');
+                } else {
+                    updateMotivationMessage();
+                }
+            }, 30000);
+        });
+    </script>
+</body>
+</html>
